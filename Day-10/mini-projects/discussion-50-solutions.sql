@@ -32,6 +32,7 @@ select name as countryName, count(IsOfficial='T') as no_of_official_languages, s
 -- Part 4: Advanced Scenario - Time Series Analysis
 
 -- 4.1 Monthly Sales Growth: Calculate the month-over-month sales growth percentage for each product line.
-
+select p.productLine, extract(year from o.orderDate) as year, extract(month from o.orderDate) as month, sum(od.quantityOrdered*od.priceEach) as sales, (sum(od.quantityOrdered*od.priceEach)-lag(sum(od.quantityOrdered*od.priceEach)) over(order by extract(year from o.orderDate), extract(month from o.orderDate)))/lag(sum(od.quantityOrdered*od.priceEach)) over(order by extract(year from o.orderDate), extract(month from o.orderDate))*100 as growth_percentage from orders o join orderdetails od using(orderNumber) join products p using(productCode) group by p.productLine,extract(year from o.orderDate),extract(month from o.orderDate);
 
 -- 4.2 Seasonal Effect Analysis: Identify quarters with significantly higher sales for each office and investigate possible reasons.
+select officeCode, year(orderDate) as year, quarter(orderDate) as quarter, sum(quantityOrdered*priceEach) as sales, (sum(quantityOrdered*priceEach)-lag(sum(quantityOrdered*priceEach)) over (order by officeCode, year(orderDate), quarter(orderDate)))/lag(sum(quantityOrdered*priceEach)) over (order by officeCode, year(orderDate), quarter(orderDate))*100 as growth_percentage from offices o join employees e using(officeCode) join customers c on e.employeeNumber=c.salesRepEmployeeNumber join orders ods using(customerNumber) join orderdetails od using(orderNumber) group by o.officeCode,year(ods.orderDate),quarter(ods.orderDate);
