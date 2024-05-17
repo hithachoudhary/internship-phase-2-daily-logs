@@ -23,10 +23,10 @@ select concat (FIRST_NAME,' ',LAST_NAME) as emp_name, SALARY from employees wher
 select concat (FIRST_NAME, " ",LAST_NAME) as emp_name, SALARY from employees where SALARY> (select salary from employees where LAST_NAME='BELL');
 
 -- 9.Write a query to find the name (first_name, last_name), and salary of the employees who earn the same salary as the minimum salary for all departments.
-select concat (FIRST_NAME," ",LAST_NAME) as emp_name, SALARY from employees where SALARY = (select min(SALARY) from employees);
+select concat(first_name," ",last_name) as employee_name, salary from employees e where salary= all(select min(salary) from employees e1 where e1.department_id = e.department_id);
 
 -- 10.Write a query to find the name (first_name, last_name), and salary of the employees whose salary is greater than the average salary of all departments.
-select concat(FIRST_NAME," ",LAST_NAME) as emp_name, SALARY, DEPARTMENT_ID from employees where salary > all(select avg(SALARY) from employees group by DEPARTMENT_ID);
+select concat(first_name," ",last_name) as employee_name, salary from employees e where salary> all(select avg(salary) from employees e1 where e1.department_id = e.department_id);
 
 -- 11.Write a query to find the name (first_name, last_name) and salary of the employees who earn a salary that is higher than the salary of all the Shipping Clerk (JOB_ID = 'SH_CLERK'). Sort the results of the salary from the lowest to highest.
 select concat (FIRST_NAME," ",LAST_NAME) as emp_name, SALARY from employees where SALARY > all(select SALARY from employees where JOB_ID = 'SH_CLERK') order by SALARY;
