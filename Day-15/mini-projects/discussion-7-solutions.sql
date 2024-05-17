@@ -62,4 +62,5 @@ select SALARY from employees order by SALARY desc limit 3;
 select SALARY from employees order by SALARY limit 3;
 
 -- 22.Write a query to get nth max salaries of employees.
-select distinct SALARY from employees e1 where (select count(distinct e2.SALARY) from employees e2 where e2.SALARY > e1.SALARY) limit 1;
+    -- n value should be specified by the user
+select distinct salary from employees order by salary desc limit 1 offset n-1;
