@@ -20,10 +20,11 @@ select orderNumber, sum(priceEach*quantityOrdered) as total_amount from orderdet
 
 --Task 3.2: Products with Maximum Order Quantity
     --Objective: Find products that have been ordered in quantities equal to the maximum quantity ordered for any product.
-
+select p.productName, od.quantityOrdered from orderdetails od join products p using(productCode) where od.quantityOrdered=all(select max(od.quantityOrdered) from orderdetails od) group by p.productName, od.quantityOrdered;
 
 --Task 4.1: High-Value Customers in Specific Regions
     --Objective: Identify customers who have made payments in the top 10% of all payments and are located in specific geographic regions.
+
 
 --Task 4.2: Seasonal Sales Analysis
     --Objective: Analyze sales data to identify products with significantly higher sales in specific seasons compared to their annual sales average.
